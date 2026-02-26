@@ -805,7 +805,7 @@ tree's future growth is shaped as much by its neighbors as by its own size.
     c1, c2, c3 = st.columns(3)
     c1.metric("Cost Savings vs. Field Crews",  "60–80%",        help="Estimated reduction using drone + satellite vs. traditional ground inventory")
     c2.metric("Forecast Horizon — 1 Drone Flight", "7 Years",   help="A single LiDAR acquisition at age 8 predicts yield through age 15")
-    c3.metric("Satellite Data Cost",            "Free",          help="Sentinel-1 and Sentinel-2 are open-access ESA missions")
+    c3.metric("Individual Tree Coverage",       "14,817 Trees",  help="Individual tree data collected with LiDAR across Virginia and North Carolina, US")
     c1b, c2b, c3b = st.columns(3)
     c1b.metric("Best Individual Tree Accuracy", "9.59% nRMSE",  help="SVR model, Project 1 — volume deviation from field measurement")
     c2b.metric("Stand-Level Deviation",         "1.53%",         help="Random Forest aggregate prediction vs. field-measured stand volume")
