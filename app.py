@@ -167,6 +167,12 @@ def _inject_css() -> None:
           margin-top: 2px;
       }}
 
+      /* ---- Primary button font size ---- */
+      [data-testid="stBaseButton-primary"] {{
+          font-size: 1.2rem !important;
+          font-family: Georgia, serif !important;
+      }}
+
       /* ---- Selectbox label ---- */
       label[data-testid="stWidgetLabel"] {{
           color: {_PALETTE['teal']};
@@ -341,20 +347,12 @@ def _page_home() -> None:
     # -- "Big Picture" callout banner with navigation button --
     st.markdown(f"""
     <div style="
-        background: linear-gradient(135deg, {_PALETTE['dark']} 0%, {_PALETTE['teal']} 100%);
+        background: linear-gradient(135deg, {_PALETTE['teal']} 0%, {_PALETTE['sage']} 100%);
         border-radius: 12px;
         padding: 32px 36px;
         margin: 10px 0 30px 0;
         text-align: center;
     ">
-      <p style="
-          font-size: 0.75rem;
-          text-transform: uppercase;
-          letter-spacing: 3px;
-          color: {_PALETTE['beige']};
-          margin: 0 0 8px 0;
-          font-weight: 700;
-      ">New</p>
       <p style="
           font-size: 1.5rem;
           font-family: Georgia, serif;
