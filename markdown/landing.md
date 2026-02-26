@@ -10,7 +10,7 @@
     across individual trees, stands, and landscapes.
   </p>
 
-  <div style="display: inline-block; text-align: left; background: #F5F0E8; border: 1px solid #C5B89A; border-radius: 10px; padding: 20px 32px; margin: 0 auto 12px auto; max-width: 640px;">
+  <div style="display: inline-block; text-align: center; background: #F5F0E8; border: 1px solid #C5B89A; border-radius: 10px; padding: 20px 32px; margin: 0 auto 12px auto; max-width: 640px;">
     <p style="font-size: 1.05rem; font-family: Georgia, serif; color: #3D5A5A; font-weight: bold; margin: 0 0 4px 0;">
       Gunjan Barua
     </p>
