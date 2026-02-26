@@ -125,6 +125,18 @@ def _inject_css() -> None:
           border-radius: 10px;
           padding: 14px 18px;
       }}
+      [data-testid="stMetricValue"] {{
+          color: {_PALETTE['dark']} !important;
+          font-family: Georgia, serif !important;
+          font-size: 1.8rem !important;
+      }}
+      [data-testid="stMetricLabel"] {{
+          color: #1A1A1A !important;
+          font-family: Georgia, serif !important;
+      }}
+      [data-testid="stMetricDelta"] {{
+          color: {_PALETTE['teal']} !important;
+      }}
 
       /* ---- Scrollytelling section label ---- */
       .section-label {{
