@@ -13,7 +13,7 @@ import streamlit as st
 from pathlib import Path
 
 from modules.data_loader import load_all_data
-from modules import proj1_plots, proj2_plots, proj3_plots
+from modules import proj1_plots, proj2_plots, proj3_plots, big_picture_plots
 
 
 # ---------------------------------------------------------------------------
@@ -73,6 +73,7 @@ _PAGES = [
     "Project 1: Individual Trees",
     "Project 2: Stand Dynamics",
     "Project 3: Remote Sensing",
+    "The Big Picture",
 ]
 
 
@@ -500,6 +501,168 @@ This proves the tremendous value of **multi-sensor fusion**: providing both stru
 
 
 # ---------------------------------------------------------------------------
+# The Big Picture page
+# ---------------------------------------------------------------------------
+def _page_big_picture(data: dict) -> None:  # noqa: ARG001 (data reserved for future use)
+    st.markdown(_load_md("big_picture.md"), unsafe_allow_html=True)
+
+    # ---- At a Glance: three scales side-by-side --------------------------
+    _section("At a Glance", "Three Scales of Prediction")
+    st.caption(
+        "Each bar represents the best-performing model at that spatial scale. "
+        "The dashed line marks the conventional 'moderate accuracy' threshold."
+    )
+    st.plotly_chart(
+        big_picture_plots.plot_scale_comparison_metrics(),
+        use_container_width=True,
+    )
+    st.markdown("""
+<div style="font-size:1.15rem; line-height:1.75; color:#1A1A1A; margin: 18px 0 8px 0;">
+
+This dissertation demonstrates that the same loblolly pine forests can be accurately monitored
+at three very different levels of detail — from a single tree to an entire landscape.
+The highest accuracy is achieved when a drone captures every branch and needle in 3D detail,
+while satellite-based monitoring, though slightly less precise, offers something far more
+powerful: **free, continuous, wall-to-wall coverage** across hundreds of thousands of hectares.
+The right tool depends on the management question being asked.
+
+</div>
+""", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ---- Technology pipeline ---------------------------------------------
+    _section("The Technology", "From Drone to Satellite — The Full Data Pipeline")
+    st.caption(
+        "Follow the data: sensors on the left feed into feature types, "
+        "which feed into machine learning models, which produce predictions on the right."
+    )
+    st.plotly_chart(
+        big_picture_plots.plot_technology_pipeline(),
+        use_container_width=True,
+    )
+    st.markdown("""
+<div style="font-size:1.15rem; line-height:1.75; color:#1A1A1A; margin: 18px 0 8px 0;">
+
+A single drone flight captures the precise three-dimensional shape of every tree crown,
+generating the structural and competitive metrics that power Projects 1 and 2.
+Satellites take over at the landscape scale, with the Sentinel constellation providing
+24 months of free, repeat-coverage radar and optical imagery. Critically, no single model
+or sensor dominates — **Random Forest excels with drone data, while GRU and LSTM neural
+networks are best suited to filtering the noise in dense satellite time-series.**
+
+</div>
+""", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ---- The Density Dilemma ---------------------------------------------
+    _section("The Pattern", "Density Controls Everything")
+    st.caption(
+        "All three projects show the same trend: accuracy peaks at medium density "
+        "and drops at both extremes."
+    )
+    st.plotly_chart(
+        big_picture_plots.plot_density_vs_accuracy(),
+        use_container_width=True,
+    )
+    st.markdown("""
+<div style="font-size:1.15rem; line-height:1.75; color:#1A1A1A; margin: 18px 0 8px 0;">
+
+The single most consistent finding across all three projects is that **stand density is
+the primary limiting factor for remote sensing accuracy**. In low-density stands, gaps in
+the canopy let the sensor "see" the soil and understory, introducing background noise.
+In very dense stands, the canopy becomes an impenetrable wall: drone LiDAR cannot separate
+individual tree crowns, and satellites lose sensitivity to any additional biomass hidden
+beneath a fully closed canopy. The medium-density "sweet spot" (618–1,236 TPH) consistently
+produces the highest accuracy across all sensors and all models.
+
+</div>
+""", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ---- Model showdown heatmap ------------------------------------------
+    _section("The Algorithms", "Which Model Wins?")
+    st.caption(
+        "Green cells indicate higher R². Grey dashes indicate the model was not "
+        "tested at that scale."
+    )
+    st.plotly_chart(
+        big_picture_plots.plot_model_showdown(),
+        use_container_width=True,
+    )
+    st.markdown("""
+<div style="font-size:1.15rem; line-height:1.75; color:#1A1A1A; margin: 18px 0 8px 0;">
+
+**Random Forest is the most versatile algorithm** — it achieves top or near-top accuracy
+at every scale where it was tested, and its predictions, when aggregated from individual
+trees to the stand level, deviate from field measurements by only 1.53%. Deep learning
+(GRU and LSTM) comes into its own exclusively at the satellite scale, where its ability to
+process sequential time-series data and filter out day-to-day atmospheric noise gives it
+an edge over traditional ensemble methods. No single algorithm wins everywhere — the choice
+of model should be matched to the data type and the forecasting horizon.
+
+</div>
+""", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ---- Feature importance synthesis ------------------------------------
+    _section("The Drivers", "What the Models Actually Learn")
+    st.caption(
+        "Approximate share of predictive importance attributed to each broad feature "
+        "category, derived from published permutation importance results."
+    )
+    st.plotly_chart(
+        big_picture_plots.plot_feature_importance_synthesis(),
+        use_container_width=True,
+    )
+    st.markdown("""
+<div style="font-size:1.15rem; line-height:1.75; color:#1A1A1A; margin: 18px 0 8px 0;">
+
+The feature importance results tell a compelling ecological story. At the individual-tree scale
+(Projects 1 & 2), **competition between neighboring trees is the dominant driver of future
+yield** — not just how big a tree is today, but how much pressure its neighbors are exerting
+on its growth. As the stand matures, this competitive signal grows stronger. At the satellite
+scale (Project 3), the models shift entirely to radar backscatter and optical spectral bands,
+with different algorithms relying on different sensor types to estimate the same underlying
+biomass. Together, these patterns confirm that yield is fundamentally a **social process**: a
+tree's future growth is shaped as much by its neighbors as by its own size.
+
+</div>
+""", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ---- Real-world impact: metric cards ---------------------------------
+    _section("Real-World Impact", "What This Means for Forest Management")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Cost Savings vs. Field Crews",  "60–80%",        help="Estimated reduction using drone + satellite vs. traditional ground inventory")
+    c2.metric("Forecast Horizon — 1 Drone Flight", "7 Years",   help="A single LiDAR acquisition at age 8 predicts yield through age 15")
+    c3.metric("Satellite Data Cost",            "Free",          help="Sentinel-1 and Sentinel-2 are open-access ESA missions")
+    c1b, c2b, c3b = st.columns(3)
+    c1b.metric("Best Individual Tree Accuracy", "9.59% nRMSE",  help="SVR model, Project 1 — volume deviation from field measurement")
+    c2b.metric("Stand-Level Deviation",         "1.53%",         help="Random Forest aggregate prediction vs. field-measured stand volume")
+    c3b.metric("Landscape Coverage",            "258 Plots",     help="Plots distributed across the southeastern United States")
+
+    st.markdown("""
+<div style="font-size:1.15rem; line-height:1.75; color:#1A1A1A; margin: 24px 0 8px 0;">
+
+**The bottom line:** This dissertation proves that by combining drone and satellite technology
+with modern machine learning, it is possible to replace expensive, labor-intensive field
+inventories with accurate, scalable, and continuous forest monitoring — from the individual
+tree to the continental scale. A forester can now fly one drone at age 8 and reliably
+forecast the yield of every tree in the stand for the next seven years. At the landscape
+level, free satellite data processed by deep learning algorithms can track plantation
+volume across hundreds of thousands of hectares in near real-time. These tools do not
+replace forest professionals — they give them a superpower.
+
+</div>
+""", unsafe_allow_html=True)
+
+
+# ---------------------------------------------------------------------------
 # Sidebar
 # ---------------------------------------------------------------------------
 def _render_sidebar() -> str:
@@ -558,6 +721,8 @@ def main() -> None:
         _page_project2(data)
     elif page == "Project 3: Remote Sensing":
         _page_project3(data)
+    elif page == "The Big Picture":
+        _page_big_picture(data)
 
 
 if __name__ == "__main__":
