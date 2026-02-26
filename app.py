@@ -383,7 +383,7 @@ def _page_home() -> None:
             use_container_width=True,
             type="primary",
         ):
-            st.session_state.nav = "The Big Picture"
+            st.session_state["_nav_idx"] = _PAGES.index("The Big Picture")
             st.rerun()
 
 
@@ -850,9 +850,11 @@ def _render_sidebar() -> str:
         page = st.radio(
             "Navigate to:",
             _PAGES,
-            key="nav",
+            index=st.session_state.get("_nav_idx", 0),
             label_visibility="collapsed",
         )
+        # Keep _nav_idx in sync with the user's sidebar selection
+        st.session_state["_nav_idx"] = _PAGES.index(page)
 
         st.markdown("---")
 
