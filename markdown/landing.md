@@ -67,7 +67,10 @@ How do we monitor regional timber volume without the high cost of continuous LiD
 
 ## How to Explore This Dashboard
 
-Use the **sidebar** to navigate between projects. Each project page follows a
+**Start with The Big Picture** — a visual, jargon-free summary of the
+entire dissertation. Then dive deeper into any project that interests you.
+
+Use the **sidebar** to navigate between pages. Each project page follows a
 **scrollytelling** format:
 
 1. Read the narrative context

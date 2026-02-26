@@ -338,6 +338,56 @@ def _section(eyebrow: str, heading: str = "") -> None:
 def _page_home() -> None:
     st.markdown(_load_md("landing.md"), unsafe_allow_html=True)
 
+    # -- "Big Picture" callout banner with navigation button --
+    st.markdown(f"""
+    <div style="
+        background: linear-gradient(135deg, {_PALETTE['dark']} 0%, {_PALETTE['teal']} 100%);
+        border-radius: 12px;
+        padding: 32px 36px;
+        margin: 10px 0 30px 0;
+        text-align: center;
+    ">
+      <p style="
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 3px;
+          color: {_PALETTE['beige']};
+          margin: 0 0 8px 0;
+          font-weight: 700;
+      ">New</p>
+      <p style="
+          font-size: 1.5rem;
+          font-family: Georgia, serif;
+          color: {_PALETTE['light']};
+          margin: 0 0 10px 0;
+          line-height: 1.4;
+      ">Want the short version?</p>
+      <p style="
+          font-size: 1.05rem;
+          color: {_PALETTE['light']};
+          opacity: 0.88;
+          max-width: 560px;
+          margin: 0 auto 18px auto;
+          line-height: 1.65;
+      ">
+        Explore <strong>The Big Picture</strong> — a visual summary of what
+        all three projects discovered, why it matters, and what it means
+        for the future of forest management.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Centered navigation button
+    _, col_btn, _ = st.columns([1, 2, 1])
+    with col_btn:
+        if st.button(
+            "🌲  Go to The Big Picture",
+            use_container_width=True,
+            type="primary",
+        ):
+            st.session_state.nav = "The Big Picture"
+            st.rerun()
+
 
 def _page_project1(data: dict) -> None:
     # ---- Narrative intro -------------------------------------------------
@@ -802,6 +852,7 @@ def _render_sidebar() -> str:
         page = st.radio(
             "Navigate to:",
             _PAGES,
+            key="nav",
             label_visibility="collapsed",
         )
 
