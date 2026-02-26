@@ -93,6 +93,15 @@ _FEATURE_LABELS = {
 # Public functions
 # ---------------------------------------------------------------------------
 
+_SCATTER_SAMPLE = 400   # max points per (model, age) trace in animated scatter
+_TPH_SAMPLE     = 200   # max points per (model, tph, age) trace in TPH subplot
+
+
+def _sample(sub: pd.DataFrame, n: int) -> pd.DataFrame:
+    """Return up to n rows, reproducibly sampled."""
+    return sub.sample(n=min(n, len(sub)), random_state=42)
+
+
 def plot_p2_scatter_animated(df: pd.DataFrame) -> go.Figure:
     """
     Scatter plot of observed vs. predicted stand volume with a Plotly
@@ -151,9 +160,9 @@ def plot_p2_scatter_animated(df: pd.DataFrame) -> go.Figure:
         age_df = df[df["age"] == age_val]
         frame_traces = []
 
-        # Scatter traces (one per model)
+        # Scatter traces (one per model) — sampled to keep payload small
         for model in models:
-            sub = age_df[age_df["model"] == model]
+            sub = _sample(age_df[age_df["model"] == model], _SCATTER_SAMPLE)
             frame_traces.append(go.Scatter(
                 x=sub["volume_m"],
                 y=sub["predicted_volume_m"],
@@ -197,9 +206,9 @@ def plot_p2_scatter_animated(df: pd.DataFrame) -> go.Figure:
     first_df = df[df["age"] == initial_age]
     initial_traces = []
 
-    # Scatter traces
+    # Scatter traces — sampled
     for i, model in enumerate(models):
-        sub = first_df[first_df["model"] == model]
+        sub = _sample(first_df[first_df["model"] == model], _SCATTER_SAMPLE)
         initial_traces.append(go.Scatter(
             x=sub["volume_m"],
             y=sub["predicted_volume_m"],
@@ -258,9 +267,9 @@ def plot_p2_scatter_animated(df: pd.DataFrame) -> go.Figure:
     slider_steps = [
         dict(
             args=[[str(age)], dict(
-                frame=dict(duration=450, redraw=True),
+                frame=dict(duration=200, redraw=False),
                 mode="immediate",
-                transition=dict(duration=300),
+                transition=dict(duration=150),
             )],
             label=str(age),
             method="animate",
@@ -326,9 +335,9 @@ def plot_p2_scatter_animated(df: pd.DataFrame) -> go.Figure:
                         label="\u25b6  Play",
                         method="animate",
                         args=[None, dict(
-                            frame=dict(duration=550, redraw=True),
+                            frame=dict(duration=400, redraw=False),
                             fromcurrent=True,
-                            transition=dict(duration=350, easing="quadratic-in-out"),
+                            transition=dict(duration=200, easing="quadratic-in-out"),
                         )],
                     ),
                     dict(
@@ -420,13 +429,13 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
     # Capture subplot-title annotations before we add our own
     subplot_title_anns = list(fig.layout.annotations)
 
-    # ---- Traces: model × tph × age ----------------------------------------
+    # ---- Traces: model × tph × age — sampled to keep payload small --------
     for i, model in enumerate(models):
         model_df = df[df["model"] == model]
         for j, tph_val in enumerate(tph_vals):
             tph_df = model_df[model_df["tph"] == tph_val]
             for k, age_val in enumerate(ages):
-                sub = tph_df[tph_df["age"] == age_val]
+                sub = _sample(tph_df[tph_df["age"] == age_val], _TPH_SAMPLE)
                 fig.add_trace(
                     go.Scatter(
                         x=sub["volume_m"],
