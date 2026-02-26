@@ -167,8 +167,12 @@ def _inject_css() -> None:
       .stMarkdown li,
       .stMarkdown ol,
       .stMarkdown ul,
+      .stMarkdown td,
+      .stMarkdown th,
       [data-testid="stMarkdownContainer"] p,
-      [data-testid="stMarkdownContainer"] li {{
+      [data-testid="stMarkdownContainer"] li,
+      [data-testid="stMarkdownContainer"] td,
+      [data-testid="stMarkdownContainer"] th {{
           color: #1A1A1A !important;
       }}
 
