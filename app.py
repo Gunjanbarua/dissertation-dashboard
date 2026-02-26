@@ -196,6 +196,16 @@ def _inject_css() -> None:
           color: #1A1A1A !important;
       }}
 
+      /* ---- Sidebar text — must come AFTER main content rule to win ---- */
+      [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,
+      [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] span,
+      [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] em,
+      [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] strong,
+      [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] li,
+      [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] td {{
+          color: {_PALETTE['light']} !important;
+      }}
+
       /* ---- Expander content text ---- */
       [data-testid="stExpander"] summary span,
       [data-testid="stExpander"] p,
