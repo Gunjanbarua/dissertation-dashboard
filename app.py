@@ -214,6 +214,95 @@ def _inject_css() -> None:
       [data-testid="stExpander"] li {{
           color: #1A1A1A !important;
       }}
+
+      /* ================================================================
+         MOBILE & TABLET RESPONSIVE STYLES
+         Breakpoint 768px  → tablets / large phones (landscape)
+         Breakpoint 480px  → phones (portrait)
+      ================================================================ */
+
+      @media (max-width: 768px) {{
+          /* Reduce main content horizontal padding */
+          .main .block-container {{
+              padding-left: 1rem !important;
+              padding-right: 1rem !important;
+              padding-top: 1.2rem !important;
+              max-width: 100% !important;
+          }}
+
+          /* Shrink headings */
+          h1,
+          [data-testid="stMarkdownContainer"] h1 {{
+              font-size: 1.65rem !important;
+              line-height: 1.3 !important;
+          }}
+          h2,
+          [data-testid="stMarkdownContainer"] h2 {{
+              font-size: 1.35rem !important;
+          }}
+          h3, h4, h5, h6,
+          [data-testid="stMarkdownContainer"] h3,
+          [data-testid="stMarkdownContainer"] h4 {{
+              font-size: 1.1rem !important;
+          }}
+
+          /* Section label */
+          .section-label {{
+              margin: 18px 0 8px 0 !important;
+          }}
+          .section-label span.heading {{
+              font-size: 1rem !important;
+          }}
+
+          /* Metric values — prevent overflow */
+          [data-testid="stMetricValue"] {{
+              font-size: 1.4rem !important;
+          }}
+
+          /* Plotly chart card — reduce wasted padding */
+          [data-testid="stPlotlyChart"] {{
+              padding: 2px !important;
+          }}
+
+          /* Stack the 3-column metric grid vertically */
+          [data-testid="column"] {{
+              min-width: 100% !important;
+              flex: 1 1 100% !important;
+          }}
+
+          /* Sidebar radio font smaller on compact screens */
+          [data-testid="stSidebar"] .stRadio label span,
+          [data-testid="stSidebar"] .stRadio label p {{
+              font-size: 0.95rem !important;
+          }}
+      }}
+
+      @media (max-width: 480px) {{
+          /* Extra-small phone: tighten further */
+          .main .block-container {{
+              padding-left: 0.6rem !important;
+              padding-right: 0.6rem !important;
+          }}
+
+          h1,
+          [data-testid="stMarkdownContainer"] h1 {{
+              font-size: 1.35rem !important;
+          }}
+          h2,
+          [data-testid="stMarkdownContainer"] h2 {{
+              font-size: 1.15rem !important;
+          }}
+
+          /* Metric values */
+          [data-testid="stMetricValue"] {{
+              font-size: 1.2rem !important;
+          }}
+
+          /* Caption / helper text */
+          [data-testid="stCaptionContainer"] p {{
+              font-size: 0.8rem !important;
+          }}
+      }}
     </style>
     """, unsafe_allow_html=True)
 
