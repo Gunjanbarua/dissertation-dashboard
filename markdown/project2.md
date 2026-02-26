@@ -6,8 +6,6 @@
 
 In operational forestry, acquiring high-density LiDAR data annually is often cost-prohibitive. A common practice is to use a single LiDAR snapshot to predict future yield, implicitly assuming that the relationship between a tree's early structure and its future growth remains static. However, as young, open stands transition into dense, closed-canopy forests, the ecological drivers of growth fundamentally change.
 
-#### The article is currently in review. [Read the preprint here](https://ssrn.com/abstract=6228779)
-
 ### The Temporal Challenge & Objectives
 
 This project investigates the **temporal transferability** of machine learning models. Using a single UAV-LiDAR acquisition obtained at age 8, we forecasted the annual individual tree yield of *Pinus taeda* (L.) from age 9 through 15. 

@@ -6,6 +6,8 @@
 
 The operational bottleneck in forest management is the high cost and low temporal resolution of traditional ground-based inventories. While field plots offer high local accuracy, they are resource-intensive and often conducted only every five or more years. This study presents a scalable alternative: integrating 24 months of Sentinel-1 (SAR) and Sentinel-2 (Optical) data to predict plot-level timber volume ($V_{ob}$) across 258 sites in the southeastern United States.
 
+#### The article is currently in review. [Read the preprint here](https://ssrn.com/abstract=6228779)
+
 ---
 
 ## The Remote Sensing Feature Set
