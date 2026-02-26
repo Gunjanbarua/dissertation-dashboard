@@ -5,10 +5,35 @@
   <h1 style="font-size: 2.5rem; color: #3D5A5A; font-family: Georgia, serif; line-height: 1.35; margin-bottom: 16px;">
     A Multi-Scalar Framework for <em>Pinus taeda</em> (L.) Yield Prediction
   </h1>
-  <p style="font-size: 1.1rem; color: #1A1A1A; max-width: 680px; margin: 0 auto 32px auto; line-height: 1.75;">
+  <p style="font-size: 1.1rem; color: #1A1A1A; max-width: 680px; margin: 0 auto 20px auto; line-height: 1.75;">
     Integrating Advanced Biometrics and Remote Sensing to model forest yields
     across individual trees, stands, and landscapes.
   </p>
+
+  <div style="display: inline-block; text-align: left; background: #F5F0E8; border: 1px solid #C5B89A; border-radius: 10px; padding: 20px 32px; margin: 0 auto 12px auto; max-width: 640px;">
+    <p style="font-size: 1.05rem; font-family: Georgia, serif; color: #3D5A5A; font-weight: bold; margin: 0 0 4px 0;">
+      Gunjan Barua
+    </p>
+    <p style="font-size: 0.92rem; color: #1A1A1A; margin: 0 0 14px 0;">
+      PhD Candidate · Forest Resources and Environmental Conservation · Virginia Tech
+    </p>
+    <p style="font-size: 0.88rem; color: #5B7B7A; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase; letter-spacing: 1.5px;">
+      Advisors
+    </p>
+    <p style="font-size: 0.9rem; color: #1A1A1A; margin: 0 0 3px 0;">
+      Dr. Valerie Thomas · Forest Resources and Environmental Conservation · Virginia Tech
+    </p>
+    <p style="font-size: 0.9rem; color: #1A1A1A; margin: 0 0 16px 0;">
+      Dr. David Carter · Department of Forestry · Michigan State University
+    </p>
+    <p style="font-size: 0.9rem; color: #1A1A1A; margin: 0; line-height: 2;">
+      ✉ <a href="mailto:gunjanb@vt.edu" style="color: #5B7B7A; text-decoration: none;">gunjanb@vt.edu</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.linkedin.com/in/gunjanbarua/" target="_blank" style="color: #5B7B7A; text-decoration: none;">LinkedIn</a>
+      &nbsp;·&nbsp;
+      <a href="https://gunjanbarua.github.io/" target="_blank" style="color: #5B7B7A; text-decoration: none;">Personal Website</a>
+    </p>
+  </div>
 </div>
 
 ---
