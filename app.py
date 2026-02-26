@@ -102,9 +102,15 @@ def _inject_css() -> None:
       }}
 
       /* ---- Headings ---- */
-      h1, h2, h3, h4, h5, h6 {{
-          color: {_PALETTE['dark']};
-          font-family: Georgia, serif;
+      h1, h2, h3, h4, h5, h6,
+      [data-testid="stMarkdownContainer"] h1,
+      [data-testid="stMarkdownContainer"] h2,
+      [data-testid="stMarkdownContainer"] h3,
+      [data-testid="stMarkdownContainer"] h4,
+      [data-testid="stMarkdownContainer"] h5,
+      [data-testid="stMarkdownContainer"] h6 {{
+          color: {_PALETTE['dark']} !important;
+          font-family: Georgia, serif !important;
       }}
 
       /* ---- Horizontal rule ---- */
