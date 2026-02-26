@@ -425,16 +425,6 @@ def _page_project3(data: dict) -> None:
     # ---- Narrative intro -------------------------------------------------
     st.markdown(_load_md("project3.md"), unsafe_allow_html=True)
 
-    # ---- Key metrics row -------------------------------------------------
-    _section("At a Glance", "Project 3 Summary Statistics")
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Models Tested",  "7",             help="GRU · LSTM · RF · XGBoost · LightGBM · SVR · GBM")
-    c2.metric("Spatial Unit",   "Plot Level",    help="Stand-level volume aggregation")
-    c3.metric("RS Source",      "LiDAR + MS",    help="ALS point clouds + multispectral imagery")
-    c4.metric("Key Covariate",  "Thinning",      help="Thinned vs. unthinned stands")
-
-    st.markdown("---")
-
     # ---- Scatter with model tab buttons ----------------------------------
     _section("The Results", "Observed vs. Predicted Stand Volume")
 
