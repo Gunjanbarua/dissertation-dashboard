@@ -90,7 +90,13 @@ def _inject_css() -> None:
       [data-testid="stSidebar"] {{
           background-color: {_PALETTE['dark']};
       }}
-      [data-testid="stSidebar"] * {{
+      [data-testid="stSidebar"] *,
+      [data-testid="stSidebar"] p,
+      [data-testid="stSidebar"] span,
+      [data-testid="stSidebar"] em,
+      [data-testid="stSidebar"] strong,
+      [data-testid="stSidebar"] div,
+      [data-testid="stSidebar"] label {{
           color: {_PALETTE['light']} !important;
       }}
       [data-testid="stSidebar"] .stRadio label span,
@@ -682,11 +688,12 @@ def _render_sidebar() -> str:
         st.markdown(f"""
         <div style="text-align:center; padding: 22px 0 14px 0;">
           <div style="font-size: 2.8rem; line-height:1;">🌲</div>
-          <p style="color:{_PALETTE['beige']}; font-size:0.7rem; text-transform:uppercase;
-                    letter-spacing:2.5px; margin: 10px 0 4px 0;">PhD Dissertation</p>
-          <p style="color:{_PALETTE['light']}; font-family:Georgia,serif; font-size:0.95rem;
-                    line-height:1.45; margin:0;">
-            <em>Pinus taeda</em><br>Yield Prediction
+          <p style="color:{_PALETTE['light']}; font-size:0.82rem; text-transform:uppercase;
+                    letter-spacing:2.5px; margin: 10px 0 4px 0; font-family:sans-serif;">PhD Dissertation</p>
+          <p style="color:{_PALETTE['light']}; font-family:Georgia,serif; font-size:1.1rem;
+                    line-height:1.5; margin:0;">
+            <em style="color:{_PALETTE['light']};">Pinus taeda</em><br>
+            <span style="color:{_PALETTE['light']};">Yield Prediction</span>
           </p>
         </div>
         """, unsafe_allow_html=True)
