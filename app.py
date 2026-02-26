@@ -92,9 +92,10 @@ def _inject_css() -> None:
       [data-testid="stSidebar"] * {{
           color: {_PALETTE['light']} !important;
       }}
-      [data-testid="stSidebar"] .stRadio label span {{
-          color: {_PALETTE['beige']} !important;
-          font-size: 0.9rem;
+      [data-testid="stSidebar"] .stRadio label span,
+      [data-testid="stSidebar"] .stRadio label p {{
+          color: {_PALETTE['light']} !important;
+          font-size: 1.05rem;
       }}
       [data-testid="stSidebar"] hr {{
           border-color: {_PALETTE['teal']} !important;
@@ -526,7 +527,7 @@ def _render_sidebar() -> str:
         st.markdown("---")
 
         st.markdown(f"""
-        <div style="font-size:0.72rem; line-height:1.8; color:{_PALETTE['beige']};">
+        <div style="font-size:0.85rem; line-height:1.9; color:{_PALETTE['light']};">
           <strong style="color:{_PALETTE['light']};">Methodology</strong><br>
           Biometrics · Remote Sensing<br>
           Machine Learning · LiDAR<br><br>
@@ -534,8 +535,7 @@ def _render_sidebar() -> str:
           RF · XGBoost · LightGBM<br>
           GRU · LSTM · SVR · GBM<br><br>
           <strong style="color:{_PALETTE['light']};">Species</strong><br>
-          <em>Pinus taeda</em> L.<br>
-          Loblolly Pine
+          <em>Pinus taeda</em> L. (Loblolly Pine)
         </div>
         """, unsafe_allow_html=True)
 
