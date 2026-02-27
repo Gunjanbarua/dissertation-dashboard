@@ -421,9 +421,9 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
 
     subplot_titles = [f"{t:,} TPH" for t in tph_vals]
     fig = make_subplots(
-        rows=1, cols=n_tph,
+        rows=n_tph, cols=1,
         subplot_titles=subplot_titles,
-        horizontal_spacing=0.05,
+        vertical_spacing=0.12,
     )
 
     # Capture subplot-title annotations before we add our own
@@ -463,7 +463,7 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
                         ),
                         visible=(i == 0),
                     ),
-                    row=1, col=j + 1,
+                    row=j + 1, col=1,
                 )
 
     # ---- 1:1 reference lines -----------------------------------------------
@@ -554,16 +554,19 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
             bordercolor=_COLORS["sage"],
             font=dict(size=14, color="#1A1A1A", family="Georgia, serif"),
         )],
-        # x-axis title only on the first subplot — avoids overlapping labels
-        xaxis=dict(ax_style, title=dict(text=x_title, font=_tfont)),
+        # Row 1 (top): y-title; x-title only if it's also the only row
+        xaxis=dict(ax_style, title=dict(
+            text=x_title if n_tph == 1 else "", font=_tfont)),
         yaxis=dict(ax_style, title=dict(text=y_title, font=_tfont)),
     )
     for j in range(1, n_tph):
+        is_last = (j == n_tph - 1)
         fig.update_layout(**{
-            f"xaxis{j + 1}": dict(ax_style, title=dict(text="", font=_tfont)),
+            f"xaxis{j + 1}": dict(ax_style, title=dict(
+                text=x_title if is_last else "", font=_tfont)),
             f"yaxis{j + 1}": dict(ax_style, title=dict(text="", font=_tfont)),
         })
-    fig.update_layout(margin=dict(l=70, r=30, t=110, b=160))
+    fig.update_layout(height=780, margin=dict(l=70, r=30, t=110, b=160))
     return fig
 
 

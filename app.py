@@ -30,7 +30,6 @@ def _build_p2_temporal(df):
     return proj2_plots.plot_p2_temporal_importance(df)
 
 
-@st.cache_data(show_spinner=False)
 def _build_p2_tph(df):
     return proj2_plots.plot_p2_scatter_tph(df)
 
@@ -981,20 +980,27 @@ def main() -> None:
         st.session_state["_prev_page"] = page
     _scroll_js = """(function () {
         function doScroll() {
-            var sels = [
-                '[data-testid="stAppViewContainer"]',
-                '[data-testid="stMain"]',
-                'section.main', '.main'
-            ];
-            for (var i = 0; i < sels.length; i++) {
-                var el = window.parent.document.querySelector(sels[i]);
-                if (el) el.scrollTop = 0;
-            }
-            window.parent.scrollTo(0, 0);
+            try {
+                var p = window.parent;
+                p.scrollTo(0, 0);
+                p.document.documentElement.scrollTop = 0;
+                p.document.body.scrollTop = 0;
+                var sels = [
+                    '[data-testid="stAppViewContainer"]',
+                    '[data-testid="stMain"]',
+                    'section.main', '.main', '.stApp'
+                ];
+                for (var i = 0; i < sels.length; i++) {
+                    var el = p.document.querySelector(sels[i]);
+                    if (el) el.scrollTop = 0;
+                }
+            } catch(e) {}
         }
         doScroll();
-        setTimeout(doScroll, 150);
-        setTimeout(doScroll, 400);
+        setTimeout(doScroll, 100);
+        setTimeout(doScroll, 300);
+        setTimeout(doScroll, 700);
+        setTimeout(doScroll, 1200);
     })();""" if _navigated else ""
     components.html(f"<script>{_scroll_js}</script>", height=0)
 
