@@ -978,9 +978,15 @@ def main() -> None:
     _navigated = st.session_state.get("_prev_page") != page
     if _navigated:
         st.session_state["_prev_page"] = page
-    _scroll_js = """(function () {
-        function doScroll() {
-            try {
+        # Increment counter so each navigation produces a UNIQUE HTML string.
+        # React skips iframe updates when the HTML prop is identical, which
+        # would prevent the scroll script from re-executing on repeated
+        # navigations. The counter guarantees the prop always changes.
+        _nav_count = st.session_state.get("_nav_count", 0) + 1
+        st.session_state["_nav_count"] = _nav_count
+        _scroll_html = f"""<script data-n="{_nav_count}">(function () {{
+        function doScroll() {{
+            try {{
                 var p = window.parent;
                 p.scrollTo(0, 0);
                 p.document.documentElement.scrollTop = 0;
@@ -990,19 +996,21 @@ def main() -> None:
                     '[data-testid="stMain"]',
                     'section.main', '.main', '.stApp'
                 ];
-                for (var i = 0; i < sels.length; i++) {
+                for (var i = 0; i < sels.length; i++) {{
                     var el = p.document.querySelector(sels[i]);
                     if (el) el.scrollTop = 0;
-                }
-            } catch(e) {}
-        }
+                }}
+            }} catch(e) {{}}
+        }}
         doScroll();
         setTimeout(doScroll, 100);
         setTimeout(doScroll, 300);
         setTimeout(doScroll, 700);
         setTimeout(doScroll, 1200);
-    })();""" if _navigated else ""
-    components.html(f"<script>{_scroll_js}</script>", height=0)
+    }})();</script>"""
+    else:
+        _scroll_html = "<script>/* idle */</script>"
+    components.html(_scroll_html, height=0)
 
     data = load_all_data()
 
