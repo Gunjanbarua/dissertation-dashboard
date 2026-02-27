@@ -549,20 +549,21 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
             showactive=True,
             buttons=buttons,
             x=0.0, xanchor="left",
-            y=1.34, yanchor="top",
+            y=1.16, yanchor="top",
             bgcolor="#F5F0E8",
             bordercolor=_COLORS["sage"],
             font=dict(size=14, color="#1A1A1A", family="Georgia, serif"),
         )],
+        # x-axis title only on the first subplot — avoids overlapping labels
         xaxis=dict(ax_style, title=dict(text=x_title, font=_tfont)),
         yaxis=dict(ax_style, title=dict(text=y_title, font=_tfont)),
     )
     for j in range(1, n_tph):
         fig.update_layout(**{
-            f"xaxis{j + 1}": dict(ax_style, title=dict(text=x_title, font=_tfont)),
+            f"xaxis{j + 1}": dict(ax_style, title=dict(text="", font=_tfont)),
             f"yaxis{j + 1}": dict(ax_style, title=dict(text="", font=_tfont)),
         })
-    fig.update_layout(margin=dict(l=70, r=30, t=160, b=160))
+    fig.update_layout(margin=dict(l=70, r=30, t=110, b=160))
     return fig
 
 
