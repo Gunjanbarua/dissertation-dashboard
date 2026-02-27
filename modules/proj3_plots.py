@@ -115,7 +115,7 @@ def plot_p3_scatter(df: pd.DataFrame) -> go.Figure:
 
     # Global axis range across all models
     all_vals = pd.concat(
-        [df["Vol_m3"]] + [df[c].dropna() for c, _ in model_cols]
+        [df["Vol_m3"]] + [df[c].dropna() for c, *_ in model_cols]
     ).dropna()
     vmin, vmax = all_vals.min() * 0.94, all_vals.max() * 1.06
 
