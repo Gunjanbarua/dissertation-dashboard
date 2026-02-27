@@ -320,8 +320,8 @@ def plot_p1_scatter_tph(df: pd.DataFrame) -> go.Figure:
 
     def _subplot_title(v):
         try:
-            int(str(v))
-            return str(v) + " Trees Per Hectare"
+            n = int(str(v))
+            return f"{n:,} TPH"
         except ValueError:
             return str(v)
 
@@ -329,7 +329,7 @@ def plot_p1_scatter_tph(df: pd.DataFrame) -> go.Figure:
     fig = make_subplots(
         rows=1, cols=n_tph,
         subplot_titles=subplot_titles,
-        horizontal_spacing=0.09,
+        horizontal_spacing=0.05,
     )
 
     # Capture subplot-title annotations before adding our own

@@ -233,7 +233,7 @@ def plot_density_vs_accuracy() -> go.Figure:
     Line chart showing how R² drops as stand density increases,
     one line per project.
     """
-    density_labels = ["Low (618 TPH)", "Medium (1,236 TPH)", "High (1,853 TPH)"]
+    density_labels = ["Low<br>618 TPH", "Medium<br>1,236 TPH", "High<br>1,853 TPH"]
 
     project_lines = [
         dict(
@@ -301,7 +301,7 @@ def plot_density_vs_accuracy() -> go.Figure:
             zeroline=False,
             title_font=dict(color="#1A1A1A"),
             tickfont=dict(color="#1A1A1A", size=10),
-            tickangle=-30,
+            tickangle=0,
         ),
         yaxis=dict(
             title="R² (Model Accuracy)",

@@ -94,17 +94,17 @@ def plot_p3_scatter(df: pd.DataFrame) -> go.Figure:
     if df.empty:
         return _empty_figure("No data available — place proj3.csv in data/.")
 
-    # Fixed display order
+    # Fixed display order — full label for titles, short label for buttons
     _ORDERED = [
-        ("pred_RF",       "Random Forest"),
-        ("pred_GRU",      "GRU"),
-        ("pred_LSTM",     "LSTM"),
-        ("pred_XGBoost",  "XGBoost"),
-        ("pred_LightGBM", "LightGBM"),
-        ("pred_SVR",      "SVR"),
-        ("pred_GBM",      "GBM"),
+        ("pred_RF",       "Random Forest", "RF"),
+        ("pred_GRU",      "GRU",           "GRU"),
+        ("pred_LSTM",     "LSTM",          "LSTM"),
+        ("pred_XGBoost",  "XGBoost",       "XGB"),
+        ("pred_LightGBM", "LightGBM",      "LGBM"),
+        ("pred_SVR",      "SVR",           "SVR"),
+        ("pred_GBM",      "GBM",           "GBM"),
     ]
-    model_cols = [(col, lbl) for col, lbl in _ORDERED if col in df.columns]
+    model_cols = [(col, lbl, btn) for col, lbl, btn in _ORDERED if col in df.columns]
     if not model_cols:
         return _empty_figure("No prediction columns found in proj3.csv.")
 
@@ -167,7 +167,7 @@ def plot_p3_scatter(df: pd.DataFrame) -> go.Figure:
 
     # ── Data traces (n_models × n_thin) ──────────────────────────────────────
     optional_cols = ["tph", "plot_ID", "area_ha"]
-    for m_idx, (col, lbl) in enumerate(model_cols):
+    for m_idx, (col, lbl, _btn) in enumerate(model_cols):
         sub_df = df.dropna(subset=[col])
         for status in thinning_vals:
             sub = sub_df[sub_df["thinning_status"] == status]
@@ -202,7 +202,7 @@ def plot_p3_scatter(df: pd.DataFrame) -> go.Figure:
 
     # ── Tab buttons ───────────────────────────────────────────────────────────
     buttons = []
-    for m_idx, (col, lbl) in enumerate(model_cols):
+    for m_idx, (col, lbl, btn_lbl) in enumerate(model_cols):
         r2_val = _r2(col)
         # legend traces always True; data traces toggle by model index
         vis = [True] * n_thin + [
@@ -211,7 +211,7 @@ def plot_p3_scatter(df: pd.DataFrame) -> go.Figure:
             for _ in range(n_thin)
         ]
         buttons.append(dict(
-            label=lbl,
+            label=btn_lbl,   # short label (RF, GRU, XGB …) fits on mobile
             method="update",
             args=[
                 {"visible": vis},
@@ -231,7 +231,7 @@ def plot_p3_scatter(df: pd.DataFrame) -> go.Figure:
 
     fig.update_layout(
         **_LAYOUT_BASE,
-        title=f"Stand Volume: Observed vs. {model_cols[0][1]} Predictions",
+        title=f"Stand Volume: Observed vs. {model_cols[0][1]} Predictions",  # [1]=full name
         annotations=[_one_to_one_ann, _r2_ann(_r2(model_cols[0][0]))],
         xaxis=dict(
             title="Observed Volume (m\u00b3 ha\u207b\u00b9)",
@@ -418,14 +418,14 @@ def plot_p3_rmse_by_tph(df: pd.DataFrame) -> go.Figure:
             font=dict(color="#1A1A1A", family="Georgia, serif"),
             title_font=dict(color="#1A1A1A"),
             orientation="h",
-            yanchor="bottom",
-            y=1.04,
+            yanchor="top",
+            y=-0.10,
             xanchor="center",
             x=0.5,
         ),
     )
     # Separate call to safely override margin (avoids duplicate-key bug with _LAYOUT_BASE)
-    fig.update_layout(margin=dict(l=70, r=50, t=115, b=60))
+    fig.update_layout(margin=dict(l=70, r=50, t=80, b=120))
 
     return fig
 

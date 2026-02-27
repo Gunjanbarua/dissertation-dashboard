@@ -354,8 +354,83 @@ def _section(eyebrow: str, heading: str = "") -> None:
 # ---------------------------------------------------------------------------
 # Page renderers
 # ---------------------------------------------------------------------------
+
+def _next_page_btn(label: str, target_page: str, key: str) -> None:
+    """Render a centered primary button that navigates to target_page."""
+    st.markdown("---")
+    _, col, _ = st.columns([1, 2, 1])
+    with col:
+        if st.button(label, key=key, use_container_width=True, type="primary"):
+            st.session_state["_nav_idx"] = _PAGES.index(target_page)
+            st.rerun()
+
+
 def _page_home() -> None:
-    st.markdown(_load_md("landing.md"), unsafe_allow_html=True)
+    md_full = _load_md("landing.md")
+
+    # Split by horizontal-rule separator into 4 sections:
+    # [0] hero  [1] Research Challenge  [2] Three Projects  [3] How to Explore
+    sep = "\n---\n"
+    parts = md_full.split(sep)
+
+    # Render hero + Research Challenge
+    intro = sep.join(parts[:2]) if len(parts) >= 2 else md_full
+    st.markdown(intro, unsafe_allow_html=True)
+    st.markdown("---")
+
+    # ---- Three Interconnected Projects (Python-rendered for nav buttons) ----
+    st.markdown("## Three Interconnected Projects")
+    st.markdown(
+        "To achieve this overarching goal, the research is structured across "
+        "three progressive spatial and temporal scales:"
+    )
+
+    st.markdown("#### 1. Precision at the Individual Tree Level (Medium-Term Yield)")
+    st.markdown(
+        "Can machine learning models predict future tree volume using only a single "
+        "drone flight? This project establishes a proof-of-concept for using UAV-LiDAR "
+        "to forecast individual tree yield over a four-year interval. By comparing Random "
+        "Forest (RF) and Support Vector Machines (SVM) against traditional linear "
+        "regression, the study proves that combining Individual Tree Crown (ITC) metrics "
+        "with distance-dependent Competition Indices (CIs) provides highly accurate, "
+        "scalable yield predictions."
+    )
+    if st.button("Explore Project 1: Individual Trees →", key="home_nav_p1"):
+        st.session_state["_nav_idx"] = _PAGES.index("Project 1: Individual Trees")
+        st.rerun()
+
+    st.markdown("#### 2. Predicting Through Time (Longitudinal Stand Dynamics)")
+    st.markdown(
+        'Forests are dynamic, but can our static models keep up? Building on the first '
+        'project, this study investigates the "temporal transferability" of a single '
+        'early-age LiDAR acquisition (Age 8) to forecast annual yield up to 7 years into '
+        'the future. It uncovers a fascinating biological shift: early-year growth is '
+        'driven by individual tree size and vigor, but as the canopy closes over time, '
+        'neighborhood competition becomes the dominant predictor of yield.'
+    )
+    if st.button("Explore Project 2: Stand Dynamics →", key="home_nav_p2"):
+        st.session_state["_nav_idx"] = _PAGES.index("Project 2: Stand Dynamics")
+        st.rerun()
+
+    st.markdown("#### 3. Scaling to the Landscape (SAR-Optical Fusion & Deep Learning)")
+    st.markdown(
+        "How do we monitor regional timber volume without the high cost of continuous "
+        "LiDAR flights? The final project scales from the individual tree to the plot "
+        "level using 24 months of open-source satellite data (Sentinel-1 SAR and "
+        "Sentinel-2 optical). By employing advanced Recurrent Neural Networks (LSTM and "
+        "GRU), this study demonstrates how deep learning sequence models can filter out "
+        "noise and overcome optical signal saturation, offering a highly accurate, "
+        "cost-effective tool for continuous, large-scale plantation monitoring."
+    )
+    if st.button("Explore Project 3: Remote Sensing →", key="home_nav_p3"):
+        st.session_state["_nav_idx"] = _PAGES.index("Project 3: Remote Sensing")
+        st.rerun()
+
+    st.markdown("---")
+
+    # Render "How to Explore" section from markdown
+    if len(parts) >= 4:
+        st.markdown(parts[3], unsafe_allow_html=True)
 
     # -- "Big Picture" callout banner with navigation button --
     st.markdown(f"""
@@ -491,6 +566,7 @@ Crucially, both models heavily prioritize distance-dependent **Competition Indic
 | **SILVA2** | Competition index based on number of competing crowns |
 | **CI_sfa5** | Competition index using the surface area of the 3D convex hull for lidar returns in the top 50% of the height |
 """)
+    _next_page_btn("Next: Project 2 — Stand Dynamics →", "Project 2: Stand Dynamics", "p1_next")
 
 
 def _page_project2(data: dict) -> None:
@@ -599,6 +675,7 @@ This proves that the algorithms are not just memorizing static patterns; they ar
 
 </div>
 """, unsafe_allow_html=True)
+    _next_page_btn("Next: Project 3 — Remote Sensing →", "Project 3: Remote Sensing", "p2_next")
 
 
 def _page_project3(data: dict) -> None:
@@ -676,6 +753,7 @@ This proves the tremendous value of **multi-sensor fusion**: providing both stru
 
 </div>
 """, unsafe_allow_html=True)
+    _next_page_btn("Next: The Big Picture →", "The Big Picture", "p3_next")
 
 
 # ---------------------------------------------------------------------------
@@ -838,6 +916,7 @@ replace forest professionals — they give them a superpower.
 
 </div>
 """, unsafe_allow_html=True)
+    _next_page_btn("← Back to Home", "Home", "bp_next")
 
 
 # ---------------------------------------------------------------------------
@@ -894,32 +973,30 @@ def main() -> None:
     _inject_css()
     page = _render_sidebar()
 
-    # Scroll to top whenever the user navigates to a different page
-    if st.session_state.get("_prev_page") != page:
+    # Scroll to top on navigation.
+    # Always render the component so the Streamlit component tree stays stable
+    # (conditional rendering caused an extra rerun → double-click symptom).
+    _navigated = st.session_state.get("_prev_page") != page
+    if _navigated:
         st.session_state["_prev_page"] = page
-        components.html(
-            """<script>
-            (function () {
-                function doScroll() {
-                    var sels = [
-                        '[data-testid="stAppViewContainer"]',
-                        '[data-testid="stMain"]',
-                        'section.main',
-                        '.main'
-                    ];
-                    for (var i = 0; i < sels.length; i++) {
-                        var el = window.parent.document.querySelector(sels[i]);
-                        if (el) el.scrollTop = 0;
-                    }
-                    window.parent.scrollTo(0, 0);
-                }
-                doScroll();
-                setTimeout(doScroll, 150);
-                setTimeout(doScroll, 400);
-            })();
-            </script>""",
-            height=0,
-        )
+    _scroll_js = """(function () {
+        function doScroll() {
+            var sels = [
+                '[data-testid="stAppViewContainer"]',
+                '[data-testid="stMain"]',
+                'section.main', '.main'
+            ];
+            for (var i = 0; i < sels.length; i++) {
+                var el = window.parent.document.querySelector(sels[i]);
+                if (el) el.scrollTop = 0;
+            }
+            window.parent.scrollTo(0, 0);
+        }
+        doScroll();
+        setTimeout(doScroll, 150);
+        setTimeout(doScroll, 400);
+    })();""" if _navigated else ""
+    components.html(f"<script>{_scroll_js}</script>", height=0)
 
     data = load_all_data()
 

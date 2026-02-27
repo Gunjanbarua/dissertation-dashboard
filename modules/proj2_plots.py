@@ -419,11 +419,11 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
             else:
                 r2_map[(model, tph)] = float("nan")
 
-    subplot_titles = [f"{t} Trees Per Hectare" for t in tph_vals]
+    subplot_titles = [f"{t:,} TPH" for t in tph_vals]
     fig = make_subplots(
         rows=1, cols=n_tph,
         subplot_titles=subplot_titles,
-        horizontal_spacing=0.09,
+        horizontal_spacing=0.05,
     )
 
     # Capture subplot-title annotations before we add our own
@@ -537,8 +537,8 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
             bordercolor=_COLORS["sage"],
             borderwidth=1,
             font=dict(color="#1A1A1A"),
-            yanchor="bottom",
-            y=1.14,
+            yanchor="top",
+            y=-0.18,
             xanchor="center",
             x=0.5,
         ),
@@ -562,7 +562,7 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
             f"xaxis{j + 1}": dict(ax_style, title=dict(text=x_title, font=_tfont)),
             f"yaxis{j + 1}": dict(ax_style, title=dict(text="", font=_tfont)),
         })
-    fig.update_layout(margin=dict(l=70, r=30, t=230, b=60))
+    fig.update_layout(margin=dict(l=70, r=30, t=160, b=160))
     return fig
 
 
