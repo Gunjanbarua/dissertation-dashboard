@@ -130,21 +130,21 @@ def plot_technology_pipeline() -> go.Figure:
     """
     nodes = [
         # Sensors (0–2)
-        "UAV-LiDAR (Drone)",
-        "Sentinel-1 (Radar)",
-        "Sentinel-2 (Optical)",
+        "UAV-LiDAR",
+        "Sentinel-1",
+        "Sentinel-2",
         # Feature types (3–6)
-        "3D Tree Structure",
-        "Canopy Competition",
-        "Radar Backscatter",
-        "Spectral Reflectance",
+        "3D Tree Struct.",
+        "Canopy Comp.",
+        "Radar Backsc.",
+        "Spectral Refl.",
         # ML Models (7–9)
         "Random Forest",
         "SVR",
-        "GRU / LSTM",
+        "GRU/LSTM",
         # Outputs (10–11)
-        "Individual Tree Volume",
-        "Plot-Level Volume",
+        "Ind. Tree Vol.",
+        "Plot-Level Vol.",
     ]
 
     node_colors = (
@@ -216,10 +216,11 @@ def plot_technology_pipeline() -> go.Figure:
 
     fig.update_layout(
         **_LAYOUT_BASE,
-        height=460,
+        height=420,
         title="From Sensor to Prediction: The Full Data Pipeline",
     )
-    fig.update_layout(font=dict(family="Georgia, serif", size=11, color="#1A1A1A"))
+    fig.update_layout(font=dict(family="Georgia, serif", size=9, color="#1A1A1A"))
+    fig.update_layout(margin=dict(l=10, r=10, t=50, b=10))
     return fig
 
 
@@ -299,7 +300,8 @@ def plot_density_vs_accuracy() -> go.Figure:
             gridcolor="#EAE6DE",
             zeroline=False,
             title_font=dict(color="#1A1A1A"),
-            tickfont=dict(color="#1A1A1A"),
+            tickfont=dict(color="#1A1A1A", size=10),
+            tickangle=-30,
         ),
         yaxis=dict(
             title="R² (Model Accuracy)",
@@ -313,9 +315,14 @@ def plot_density_vs_accuracy() -> go.Figure:
             bgcolor="#F5F0E8",
             bordercolor=_COLORS["sage"],
             borderwidth=1,
-            font=dict(color="#1A1A1A"),
+            font=dict(color="#1A1A1A", size=10),
+            yanchor="top",
+            y=-0.30,
+            xanchor="left",
+            x=0,
         ),
     )
+    fig.update_layout(margin=dict(l=70, r=50, t=70, b=170))
     return fig
 
 
@@ -359,7 +366,7 @@ def plot_model_showdown() -> go.Figure:
         y=project_labels,
         text=text,
         texttemplate="%{text}",
-        textfont=dict(color="#1A1A1A", size=13, family="Georgia, serif"),
+        textfont=dict(color="#1A1A1A", size=9, family="Georgia, serif"),
         colorscale=[
             [0.0, "#F5F0E8"],   # low  → light beige
             [0.5, "#7A9E7E"],   # mid  → sage green
@@ -369,10 +376,11 @@ def plot_model_showdown() -> go.Figure:
         zmax=0.95,
         colorbar=dict(
             title="R²",
-            title_font=dict(color="#1A1A1A", family="Georgia, serif"),
-            tickfont=dict(color="#1A1A1A"),
+            title_font=dict(color="#1A1A1A", family="Georgia, serif", size=9),
+            tickfont=dict(color="#1A1A1A", size=8),
             outlinecolor=_COLORS["sage"],
             outlinewidth=1,
+            thickness=10,
         ),
         hovertemplate=(
             "<b>Model:</b> %{x}<br>"
@@ -388,15 +396,17 @@ def plot_model_showdown() -> go.Figure:
         title="Model Performance Across All Three Projects (R²)",
         xaxis=dict(
             title="",
-            tickfont=dict(color="#1A1A1A", size=11),
+            tickfont=dict(color="#1A1A1A", size=9),
+            tickangle=-30,
             gridcolor="rgba(0,0,0,0)",
         ),
         yaxis=dict(
             title="",
-            tickfont=dict(color="#1A1A1A", size=11),
+            tickfont=dict(color="#1A1A1A", size=9),
             gridcolor="rgba(0,0,0,0)",
         ),
     )
+    fig.update_layout(margin=dict(l=110, r=20, t=70, b=100))
     return fig
 
 
@@ -464,8 +474,9 @@ def plot_feature_importance_synthesis() -> go.Figure:
         bargroupgap=0.08,
         xaxis=dict(
             title="",
-            tickfont=dict(color="#1A1A1A", size=12),
+            tickfont=dict(color="#1A1A1A", size=10),
             gridcolor="rgba(0,0,0,0)",
+            tickangle=-30,
         ),
         yaxis=dict(
             title="Approximate Share of Importance (%)",

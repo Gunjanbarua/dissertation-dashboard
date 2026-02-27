@@ -10,6 +10,7 @@ Data        : cached via modules/data_loader.py (@st.cache_data)
 """
 
 import streamlit as st
+import streamlit.components.v1 as components
 from pathlib import Path
 
 from modules.data_loader import load_all_data
@@ -308,6 +309,18 @@ def _inject_css() -> None:
           [data-testid="stCaptionContainer"] p {{
               font-size: 0.8rem !important;
           }}
+      }}
+
+      /* ---- Mobile: horizontally scrollable Streamlit tab bars ---- */
+      .stTabs [data-baseweb="tab-list"] {{
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          -webkit-overflow-scrolling: touch;
+      }}
+      .stTabs [data-baseweb="tab"] {{
+          white-space: nowrap;
+          font-size: 0.75rem;
+          padding: 6px 10px;
       }}
     </style>
     """, unsafe_allow_html=True)
@@ -880,6 +893,34 @@ def _render_sidebar() -> str:
 def main() -> None:
     _inject_css()
     page = _render_sidebar()
+
+    # Scroll to top whenever the user navigates to a different page
+    if st.session_state.get("_prev_page") != page:
+        st.session_state["_prev_page"] = page
+        components.html(
+            """<script>
+            (function () {
+                function doScroll() {
+                    var sels = [
+                        '[data-testid="stAppViewContainer"]',
+                        '[data-testid="stMain"]',
+                        'section.main',
+                        '.main'
+                    ];
+                    for (var i = 0; i < sels.length; i++) {
+                        var el = window.parent.document.querySelector(sels[i]);
+                        if (el) el.scrollTop = 0;
+                    }
+                    window.parent.scrollTo(0, 0);
+                }
+                doScroll();
+                setTimeout(doScroll, 150);
+                setTimeout(doScroll, 400);
+            })();
+            </script>""",
+            height=0,
+        )
+
     data = load_all_data()
 
     if page == "Home":

@@ -427,7 +427,10 @@ def plot_p2_scatter_tph(df: pd.DataFrame) -> go.Figure:
     )
 
     # Capture subplot-title annotations before we add our own
+    # Reduce font so titles don't overlap on narrow/mobile screens
     subplot_title_anns = list(fig.layout.annotations)
+    for ann in subplot_title_anns:
+        ann["font"] = dict(size=10, family="Georgia, serif", color="#1A1A1A")
 
     # ---- Traces: model × tph × age — sampled to keep payload small --------
     for i, model in enumerate(models):
@@ -681,9 +684,13 @@ def plot_p2_temporal_importance(df: pd.DataFrame) -> go.Figure:
             bgcolor="#F5F0E8",
             bordercolor=_COLORS["sage"],
             borderwidth=1,
-            font=dict(color="#1A1A1A", size=13),
+            font=dict(color="#1A1A1A", size=11),
             title_font=dict(color="#1A1A1A"),
             entrywidth=0,
+            yanchor="top",
+            y=-0.18,
+            xanchor="left",
+            x=0,
         ),
         updatemenus=[dict(
             type="buttons",
@@ -698,6 +705,8 @@ def plot_p2_temporal_importance(df: pd.DataFrame) -> go.Figure:
             font=dict(size=13, color="#1A1A1A", family="Georgia, serif"),
         )],
     )
+    # Extra bottom margin so the below-chart legend isn't clipped
+    fig.update_layout(margin=dict(l=70, r=50, t=130, b=220))
     return fig
 
 

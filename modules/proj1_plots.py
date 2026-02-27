@@ -333,7 +333,10 @@ def plot_p1_scatter_tph(df: pd.DataFrame) -> go.Figure:
     )
 
     # Capture subplot-title annotations before adding our own
+    # Reduce font size so titles don't overlap on narrow/mobile screens
     subplot_title_anns = list(fig.layout.annotations)
+    for ann in subplot_title_anns:
+        ann["font"] = dict(size=10, family="Georgia, serif", color="#1A1A1A")
 
     custom_cols = ["treeID", "study", "reps"]
     for i, model in enumerate(models):
